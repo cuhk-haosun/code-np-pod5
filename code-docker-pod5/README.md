@@ -5,7 +5,7 @@ Develop docker to do pod5 conversion for all fast5 files, which boot automatical
 
 ## Introduction for pod5 conversion
 Convert fast5 files into a monolithic output file:
-![sample image](code-docker-pod5/pic/1.png)
+![sample image](pic/1.png)
 
 Convert fast5 files into a monolithic output in an existing directory:
 ![sample image](/pic/2.png)
