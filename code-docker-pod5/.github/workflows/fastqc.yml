@@ -1,4 +1,4 @@
-name: Docker Image "fastqc-multiqc" CI
+name: Docker Image "pod5-conversion" CI
 
 on:
   workflow_dispatch:
@@ -30,12 +30,11 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: cuhkhaosun/fastqc-multiqc:latest
+        tags: cuhkhaosun/pod5-conversion:latest
         platforms: linux/amd64
 
-    - name: Run fastqc and multiqc script
+    - name: Run pod5 conversion script
       run: |
-        docker run --name fastqc-multiqc-container -v "${{ github.workspace }}/data:/data" cuhkhaosun/fastqc-multiqc:latest /entrypoint.sh
+        docker run --name pod5-conversion-container -v "${{ github.workspace }}/data:/data" cuhkhaosun/pod5-conversion:latest /entrypoint.sh
       env:
-        FASTQC_OUTPUT_DIR: /data/fastqc_output
-        MULTIQC_OUTPUT_DIR: /data/multiqc_output
+        output_dir: /data/output_pod5s
