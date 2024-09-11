@@ -6,9 +6,7 @@ on:
     - cron: '11 0 */7 * *'
   push:
     paths:
-      - base/**
       - Dockerfile
-      - run.sh
 
 jobs:
   build-and-push:
@@ -32,9 +30,3 @@ jobs:
         push: true
         tags: cuhkhaosun/pod5-conversion:latest
         platforms: linux/amd64
-
-    - name: Run pod5 conversion script
-      run: |
-        docker run --name pod5-conversion-container -v "${{ github.workspace }}/data:/data" cuhkhaosun/pod5-conversion:latest /entrypoint.sh
-      env:
-        output_dir: /data/output_pod5s
