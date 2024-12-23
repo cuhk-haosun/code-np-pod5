@@ -2,26 +2,38 @@
 
 # lyx 6/9/2024
 
-# Set the directories for input and output
-output_dir="/data/output_pod5s"
+# Set input and output directories
+INPUT_DIR="/mnt/in"
+OUTPUT_DIR="/mnt/out"
 
-# Ensure the output directory exists
-mkdir -p "${output_dir}"
+# Source the script to set THREAD_NUM
+echo -e "\e[0;34mInfo: Running set.thread.num.sh to set THREAD_NUM...\e[0m"
+source /root/set.thread.num.sh
 
-# Find all .fast5 files in the /data directory and its subdirectories
-# and check if any files found
-if find /data -type f -name '*.fast5' | grep -q '.'; then
-    # Show all .fast5 files found
-    echo "The following .fast5 files found in the /data:"
-    find /data -type f -name '*.fast5'
+# Find and list all .fast5 files
+tmpfile=$(mktemp)
+find $INPUT_DIR -type f -name "*.fast5" > "$tmpfile"
 
-    # Process each .fast5 file using the pod5 conversion command
-    echo "Start converting .fast5 files to .pod5 format..."
-    while IFS= read -r file; do
-        pod5 convert fast5 "${file}" --output "${output_dir}/" --one-to-one /data/
-    done < <(find /data -type f -name '*.fast5')
-    echo "pod5 conversion completed. Results are in ${output_dir}"
-else
-    echo "Error: No .fast5 files found in /data." >&2
+# Check if any .fast5 files were found
+if [ ! -s "$tmpfile" ]; then
+    echo "Error: No .fast5 files found in $INPUT_DIR." >&2
+    rm "$tmpfile"
     exit 1
 fi
+
+# Process each .fast5 file with pod5 conversion
+while IFS= read -r file; do
+    BASE_NAME=$(basename -- "$file" .fast5)
+    echo -e "\e[0;34mInfo: Converting ${BASE_NAME} to .pod5 format...\e[0m"
+    
+    pod5 convert fast5 "${file}" --output "${OUTPUT_DIR}/" --one-to-one "${OUTPUT_DIR}"
+
+    # Check whether the previous command was successful
+    if [ $? -ne 0 ]; then
+        echo "Error running pod5 on $file" >&2
+        exit 1
+    fi
+done < "$tmpfile"
+rm "$tmpfile"
+
+echo -e "\e[0;34mInfo: pod5 conversion completed. Results are in ${OUTPUT_DIR}\e[0m"
