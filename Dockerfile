@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     python3-venv
 
-Create and activate a virtual python envir
+#Create and activate a virtual python envir
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
