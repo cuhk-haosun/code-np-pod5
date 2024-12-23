@@ -16,7 +16,8 @@ env:
 
 jobs:
   build:
-    runs-on: hk
+    #runs-on: hk
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
