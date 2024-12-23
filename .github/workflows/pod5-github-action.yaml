@@ -70,7 +70,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Pull Docker image
-      run: docker pull slreg.yutg.net/p/cuhkhaosun/code-docker-pod5:latest
+      run: docker pull slreg.yutg.net/p/cuhkhaosun/code-np-pod5:latest
 
     - name: Remove any old running container
       run: |
@@ -83,7 +83,7 @@ jobs:
             -v ${{ github.event.inputs.OUTPUT_PATH }}:/mnt/out \
             -e JOB_NAME=${{ github.event.inputs.JOB_NAME }} \
             -e THREAD_NUM=${{ github.event.inputs.THREAD_NUM }} \
-            slreg.yutg.net/p/cuhkhaosun/code-docker-pod5:latest
+            slreg.yutg.net/p/cuhkhaosun/code-np-pod5:latest
 
     - name: Stop and remove container
       run: |
