@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 RUN python3 -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-Install pod5
+#Install pod5
 RUN pip install pod5
 
 # Set working directory
